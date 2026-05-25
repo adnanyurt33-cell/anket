@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anket Asistanı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body class="dashboard-layout">
+    
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <i class="ri-bar-chart-box-line"></i>
+                <span>Anket Asistanı</span>
+            </div>
+        </div>
+        
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Ana Panel</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <div style="font-size: 0.875rem; color: #94a3b8; margin-bottom: 1rem;">
+                Tüm veriler cihazınızda tutulur. Başka bir cihaza geçmek için yedek alın.
+            </div>
+            <button class="btn btn-outline btn-block" style="color: white; border-color: rgba(255,255,255,0.2); margin-bottom: 0.5rem;" id="btn-export-data">
+                <i class="ri-download-line"></i> Verileri İndir (JSON)
+            </button>
+            <button class="btn btn-outline btn-block" style="color: white; border-color: rgba(255,255,255,0.2); margin-bottom: 0.5rem;" id="btn-import-data">
+                <i class="ri-upload-line"></i> Verileri Yükle
+            </button>
+            <button class="btn btn-danger btn-block" style="background-color: var(--danger); color: white; border: none; margin-bottom: 0.5rem;" id="btn-clear-all-data">
+                <i class="ri-delete-bin-2-line"></i> Tüm Verileri Temizle
+            </button>
+            <input type="file" id="file-import" accept=".json" style="display: none;">
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <div>
+                <h1 style="font-size: 1.75rem; font-weight: 700;">Canlı Anket Paneli</h1>
+                <p style="color: var(--text-muted);">Tüm anketlerinizi ve katılımları buradan yönetin.</p>
+            </div>
+            <a href="create.html" class="btn btn-primary" id="btn-create-survey" style="text-decoration:none;">
+                <i class="ri-add-line"></i>
+                Yeni Anket Oluştur
+            </a>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="ri-file-list-3-line"></i></div>
+                <div class="stat-details">
+                    <h3>Toplam Anket</h3>
+                    <div class="value" id="stat-total-surveys">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="ri-user-smile-line"></i></div>
+                <div class="stat-details">
+                    <h3>Toplam Katılım</h3>
+                    <div class="value" id="stat-total-responses">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="ri-broadcast-line"></i></div>
+                <div class="stat-details">
+                    <h3>Aktif Anketler</h3>
+                    <div class="value" id="stat-active-surveys">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple"><i class="ri-check-double-line"></i></div>
+                <div class="stat-details">
+                    <h3>Tamamlananlar</h3>
+                    <div class="value" id="stat-completed-surveys">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h2 style="font-size: 1.25rem;">Son Anketler ve Aktiviteler</h2>
+                <div class="live-indicator" id="live-indicator">
+                    <div class="pulse"></div>
+                    <span>Canlı Bağlantı Aktif</span>
+                </div>
+            </div>
+            <div style="overflow-x: auto;">
+                <table id="surveys-table">
+                    <thead>
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Anket Adı</th>
+                            <th>Katılım Sayısı</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">Yükleniyor...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- Paylaş Modali (Share) -->
+    <div class="modal-overlay" id="share-modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <div class="modal-header">
+                <h3>Anketi Paylaş</h3>
+                <button class="close-btn" id="close-share-btn"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Katılımcıların formu doldurması için aşağıdaki linki veya QR kodu kullanın. Giriş yapmalarına gerek yoktur!</p>
+                <div id="qr-container" style="margin: 1.5rem 0;"></div>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+                    <button class="btn btn-outline btn-sm" id="btn-download-qr-png"><i class="ri-image-line"></i> PNG İndir</button>
+                    <button class="btn btn-outline btn-sm" id="btn-download-qr-jpg"><i class="ri-image-fill"></i> JPG İndir</button>
+                </div>
+                <div class="link-box">
+                    <input type="text" id="share-link-input" readonly>
+                    <button class="btn btn-primary" id="btn-copy-link"><i class="ri-file-copy-line"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./assets/js/supabase.js"></script>
+    <script src="./assets/js/app.js"></script>
+</body>
+</html>

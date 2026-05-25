@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anket Asistanı - Anketi Doldur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body style="background-color: #f1f5f9;">
+    
+    <div class="survey-wrapper" id="survey-content">
+        <div style="text-align: center; padding: 2rem;">
+            <div class="pulse" style="margin: 0 auto 1rem; width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--primary-color); border-top-color: transparent; animation: spin 1s linear infinite;"></div>
+            <p>Anket yükleniyor...</p>
+            <style>
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            </style>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./assets/js/supabase.js"></script>
+    <script src="./assets/js/survey.js"></script>
+</body>
+</html>
