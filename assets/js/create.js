@@ -338,7 +338,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 ...q
             }));
             
-            await window.supabaseClient.from('questions').insert(qsToInsert);
+            const { error: insertErr } = await window.supabaseClient.from('questions').insert(qsToInsert);
+            
+            if (insertErr) {
+                alert('Sorular kaydedilirken bir hata oluştu: ' + insertErr.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ri-save-line"></i> Oluştur ve Yayınla';
+                return;
+            }
             
             window.location.href = 'index.html';
         }

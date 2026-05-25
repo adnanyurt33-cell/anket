@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${statusBadge}</td>
                 <td>
                     <button class="btn btn-outline btn-share" data-id="${s.id}" style="padding: 0.4rem 0.6rem;" title="Paylaş"><i class="ri-share-line"></i></button>
+                    <button class="btn btn-primary btn-results" data-id="${s.id}" style="padding: 0.4rem 0.6rem; margin-left: 0.5rem;" title="Sonuçları İncele"><i class="ri-eye-line"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -110,6 +111,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     });
                 }
                 shareModal.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.btn-results').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.currentTarget.getAttribute('data-id');
+                window.location.href = `results.html?id=${id}`;
             });
         });
     };
