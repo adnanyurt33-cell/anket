@@ -162,18 +162,73 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Sayılara göre azalan sırada sırala
                     const sortedCounts = Object.entries(counts).sort((a, b) => b[1] - a[1]);
                     
-                    sortedCounts.forEach(([ansText, count]) => {
+                    const labels = [];
+                    const data = [];
+                    const backgroundColors = [
+                        '#3b82f6', '#10b981', '#f59e0b', '#ef4444', 
+                        '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'
+                    ];
+
+                    let listHtml = '<div style="margin-top: 1.5rem;">';
+                    
+                    sortedCounts.forEach(([ansText, count], i) => {
+                        labels.push(ansText);
+                        data.push(count);
                         const percent = Math.round((count / responses.length) * 100);
-                        card.innerHTML += `
-                            <div class="summary-stat">
+                        const color = backgroundColors[i % backgroundColors.length];
+                        
+                        listHtml += `
+                            <div class="summary-stat" style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; border:none; padding:0;">
+                                <div style="width:12px; height:12px; border-radius:3px; background:${color};"></div>
                                 <span style="flex:1;">${ansText}</span>
-                                <span style="font-weight:600; color:var(--primary);">${count} kişi <span style="color:gray; font-size:0.85rem; font-weight:normal;">(%${percent})</span></span>
-                            </div>
-                            <div style="width:100%; background:#e2e8f0; height:6px; border-radius:3px; margin-bottom:0.5rem;">
-                                <div style="width:${percent}%; background:var(--primary); height:6px; border-radius:3px;"></div>
+                                <span style="font-weight:600; color:var(--text-main);">${count} kişi <span style="color:gray; font-size:0.85rem; font-weight:normal;">(%${percent})</span></span>
                             </div>
                         `;
                     });
+                    
+                    listHtml += '</div>';
+
+                    // Grafik için Canvas container oluştur
+                    const chartContainer = document.createElement('div');
+                    chartContainer.style.width = '100%';
+                    chartContainer.style.maxWidth = '350px';
+                    chartContainer.style.margin = '0 auto';
+                    
+                    const canvasId = 'chart-' + q.id;
+                    chartContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+                    
+                    // Önce grafiği, sonra listeyi karta ekle
+                    card.appendChild(chartContainer);
+                    
+                    const listWrapper = document.createElement('div');
+                    listWrapper.innerHTML = listHtml;
+                    card.appendChild(listWrapper);
+
+                    // DOM'a tam yerleşmesini bekleyip grafiği çiz
+                    setTimeout(() => {
+                        const ctx = document.getElementById(canvasId);
+                        if(ctx) {
+                            new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        data: data,
+                                        backgroundColor: backgroundColors,
+                                        borderWidth: 2,
+                                        hoverOffset: 4
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    plugins: {
+                                        legend: { display: false }
+                                    },
+                                    cutout: '65%'
+                                }
+                            });
+                        }
+                    }, 50);
                 }
             }
 
