@@ -763,3 +763,101 @@ input:checked + .slider:before {
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
 }
+
+/* =========================================
+   RESPONSIVE (MOBILE) STYLES
+========================================= */
+@media (max-width: 768px) {
+    /* Login Page */
+    .split-layout {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+    .split-left {
+        padding: 2rem;
+    }
+    .slogan {
+        font-size: 2rem;
+    }
+    .sub-slogan {
+        max-width: 100%;
+    }
+    .split-right {
+        padding: 2rem 1rem;
+    }
+    
+    /* Dashboard Admin Page */
+    .dashboard-layout {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+    .sidebar {
+        width: 100%;
+        padding-bottom: 1rem;
+    }
+    .sidebar-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+    }
+    .nav-item {
+        margin-bottom: 0;
+        flex: 1;
+    }
+    .nav-link {
+        justify-content: center;
+        padding: 0.75rem;
+        font-size: 0.9rem;
+        border-right: none;
+        border-bottom: 4px solid transparent;
+    }
+    .nav-link.active {
+        border-right: none;
+        border-bottom: 4px solid var(--primary-color);
+    }
+    .main-content {
+        padding: 1rem;
+    }
+    .header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    .header button {
+        width: 100%;
+    }
+    
+    /* Stats & Tables */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    /* Survey View & Results */
+    .survey-wrapper, .results-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    
+    /* Forms & Modals */
+    .question-item {
+        flex-direction: column;
+    }
+    .modal-content {
+        margin: 1rem;
+        width: auto;
+    }
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .results-header button {
+        width: 100%;
+    }
+}
